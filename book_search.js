@@ -20,24 +20,20 @@
 * @returns {JSON} - Search results.
 * */
 function findSearchTermInBooks(searchTerm, scannedTextObj) {
-   /** You will need to implement your search and
-    * return the appropriate object here. */
-
-
+   //define the structure of the results
    var result = {
        "SearchTerm": "",
        "Results": []
    };
 
 
-   //Loop thru the object
+   //Loop thru the objects parameter
    for (let scannedText of scannedTextObj) {
-       //Loop thru the content
+       //Loop thru the content inside each object
        for( let content of scannedText['Content']){
            //Check if the text comes in between spaces or ends with the text
            if (content['Text'].includes(" " + searchTerm + " ") || content['Text'].endsWith(" " + searchTerm)){
-
-               //push to results if verified
+               //Push to results if verified
                result['Results'].push({
                    "ISBN": scannedText['ISBN'],
                    "Page": content['Page'],
@@ -49,7 +45,7 @@ function findSearchTermInBooks(searchTerm, scannedTextObj) {
 
    //Set the search term
    result['SearchTerm'] = searchTerm
-  
+   //Return the result
    return result;
 }
 
@@ -109,7 +105,6 @@ _   _ _   _ ___ _____   _____ _____ ____ _____ ____
 * Please add your unit tests below.
 * */
 
-
 /** We can check that, given a known input, we get a known output. */
 const test1result = findSearchTermInBooks("the", twentyLeaguesIn);
 if (JSON.stringify(twentyLeaguesOut) === JSON.stringify(test1result)) {
@@ -119,7 +114,6 @@ if (JSON.stringify(twentyLeaguesOut) === JSON.stringify(test1result)) {
    console.log("Expected:", twentyLeaguesOut);
    console.log("Received:", test1result);
 }
-
 
 /** We could choose to check that we get the right number of results. */
 const test2result = findSearchTermInBooks("the", twentyLeaguesIn);
@@ -131,8 +125,7 @@ if (test2result.Results.length == 1) {
    console.log("Received:", test2result.Results.length);
 }
 
-
-/** Example input object. */
+//Example for a hypothetical Sherlock Holmes book with a custom ISBN, Text, Page and Line
 const sherlockIn = [
    {
        "Title": "A Study in Scarlet",
@@ -157,7 +150,7 @@ const sherlockIn = [
    }
 ]
   
-/** Example output object */
+//Expected output object for the search term "the"
 const sherlockOut = {
    "SearchTerm": "the",
    "Results": [
@@ -169,12 +162,10 @@ const sherlockOut = {
    ]
 }
 
-
-
-
-
-
+//Search for "the" on our custom object and get the return variable
 const test3result = findSearchTermInBooks("the", sherlockIn);
+
+//Check if the new input is of correct length and the correct ISBN is being sent
 if (test3result.Results.length == 1 && test3result['Results'][0]['ISBN'] == "1599866749") {
    console.log("PASS: Test 3");
 } else {
@@ -183,19 +174,15 @@ if (test3result.Results.length == 1 && test3result['Results'][0]['ISBN'] == "159
    console.log("Received:", sherlockOut.Results.length);
 }
 
-
+//Manually setting the expected output for another test where we expect to find nothing
 const sherlockOut2 = {
    "SearchTerm": "also",
    "Results": [
-      
-   ]
+    
+    ]
 }
 
-
-
-
-
-
+//Verify that the correct search term is being returned while also verifying an empty result
 const test4result = findSearchTermInBooks("also", sherlockIn);
 if (test4result.Results.length == 0 && test4result.SearchTerm == "also") {
    console.log("PASS: Test 4");
@@ -205,23 +192,17 @@ if (test4result.Results.length == 0 && test4result.SearchTerm == "also") {
    console.log("Received:", sherlockOut2.Results.length);
 }
 
-
-
-
-
-
-
-
+//Create a new search term to verify that incorrect cases are not matched
 const test5result = findSearchTermInBooks("His", sherlockIn);
 if (test5result.Results.length == 0 && test5result.SearchTerm == "His") {
    console.log("PASS: Test 5");
 } else {
    console.log("FAIL: Test 5");
-   console.log("Expected:", sherlockOut2.Results.length);
-   console.log("Received:", sherlockOut2.Results.length);
+   console.log("Expected:", 1);
+   console.log("Received:", 1);
 }
 
-
+//Create a new search term to verify that correct case is matched
 const test6result = findSearchTermInBooks("his", sherlockIn);
 if (test6result.Results.length == 1 && test6result.SearchTerm == "his") {
    console.log("PASS: Test 6");
